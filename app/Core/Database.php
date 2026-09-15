@@ -8,18 +8,22 @@ use PDO;
 use PDOException;
 use Throwable;
 
-class Database {
+class Database
+{
     private static ?PDO $pdo = null;
     private static string $driver = 'mysql';
+    private static int $transactionLevel = 0;
 
-    public static function getConnection(): PDO {
+    public static function getConnection(): PDO
+    {
         if (self::$pdo === null) {
             self::connect();
         }
         return self::$pdo;
     }
 
-    public static function connect(): void {
+    public static function connect(): void
+    {
         $driver = config('database.default', 'mysql');
         self::$driver = $driver;
         $dbConfig = config("database.connections.{$driver}");
@@ -58,24 +62,46 @@ class Database {
         }
     }
 
-    public static function query(string $sql, array $params = []): \PDOStatement {
+    public static function query(string $sql, array $params = []): \PDOStatement
+    {
+        $seen = [];
+        $sql = preg_replace_callback('/:(\w+)/', function (array $match) use (&$params, &$seen): string {
+            $name = $match[1];
+
+            if (!array_key_exists($name, $params)) {
+                return $match[0];
+            }
+
+            $seen[$name] = ($seen[$name] ?? 0) + 1;
+            if ($seen[$name] === 1) {
+                return $match[0];
+            }
+
+            $uniqueName = $name . '_' . $seen[$name];
+            $params[$uniqueName] = $params[$name];
+            return ':' . $uniqueName;
+        }, $sql);
+
         $stmt = self::getConnection()->prepare($sql);
         $stmt->execute($params);
         return $stmt;
     }
 
-    public static function fetch(string $sql, array $params = []): ?array {
+    public static function fetch(string $sql, array $params = []): ?array
+    {
         $stmt = self::query($sql, $params);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ?: null;
     }
 
-    public static function fetchAll(string $sql, array $params = []): array {
+    public static function fetchAll(string $sql, array $params = []): array
+    {
         $stmt = self::query($sql, $params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function insert(string $table, array $data): int {
+    public static function insert(string $table, array $data): int
+    {
         $fields = array_keys($data);
         $columns = implode('`, `', $fields);
         $placeholders = ':' . implode(', :', $fields);
@@ -85,7 +111,8 @@ class Database {
         return (int)self::getConnection()->lastInsertId();
     }
 
-    public static function update(string $table, array $data, string $where, array $whereParams = []): int {
+    public static function update(string $table, array $data, string $where, array $whereParams = []): int
+    {
         $fields = [];
         foreach (array_keys($data) as $field) {
             $fields[] = "`{$field}` = :set_{$field}";
@@ -105,28 +132,51 @@ class Database {
         return $stmt->rowCount();
     }
 
-    public static function delete(string $table, string $where, array $params = []): int {
+    public static function delete(string $table, string $where, array $params = []): int
+    {
         $sql = "DELETE FROM `{$table}` WHERE {$where}";
         $stmt = self::query($sql, $params);
         return $stmt->rowCount();
     }
 
-    public static function transaction(callable $callback): mixed {
+    public static function transaction(callable $callback): mixed
+    {
         $pdo = self::getConnection();
-        $pdo->beginTransaction();
+        $isNested = $pdo->inTransaction();
+        $savepoint = 'sidra_sp_' . (++self::$transactionLevel);
+
+        if ($isNested) {
+            $pdo->exec("SAVEPOINT {$savepoint}");
+        } else {
+            $pdo->beginTransaction();
+        }
+
         try {
             $result = $callback($pdo);
-            $pdo->commit();
+
+            if ($isNested) {
+                $pdo->exec("RELEASE SAVEPOINT {$savepoint}");
+            } else {
+                $pdo->commit();
+            }
+
+            self::$transactionLevel--;
             return $result;
         } catch (Throwable $e) {
-            if ($pdo->inTransaction()) {
+            if ($isNested && $pdo->inTransaction()) {
+                $pdo->exec("ROLLBACK TO SAVEPOINT {$savepoint}");
+                $pdo->exec("RELEASE SAVEPOINT {$savepoint}");
+            } elseif ($pdo->inTransaction()) {
                 $pdo->rollBack();
             }
+
+            self::$transactionLevel--;
             throw $e;
         }
     }
 
-    public static function getDriver(): string {
+    public static function getDriver(): string
+    {
         return self::$driver;
     }
 }
