@@ -1,0 +1,8 @@
+# Deny execution of scripts in uploads folder
+<FilesMatch "(?i)\.(php|phtml|php3|php4|php5|php7|php8|phar|inc|pl|py|cgi|asp|aspx|sh|bash)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+Options -ExecCGI
+Options -Indexes

@@ -1,0 +1,14 @@
+/vendor/
+.env
+/storage/logs/*.log
+/storage/cache/*
+/storage/database/*.sqlite
+/public/uploads/payments/*
+/public/uploads/events/*
+/public/uploads/qr/*
+!/public/uploads/events/.gitkeep
+!/public/uploads/payments/.gitkeep
+!/public/uploads/qr/.gitkeep
+.phpunit.result.cache
+.DS_Store
+Thumbs.db
