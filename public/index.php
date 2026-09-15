@@ -82,6 +82,7 @@ $router->post('/admin/logout', [\App\Controllers\AuthController::class, 'adminLo
 // ------------------------------------------------------------
 // Dashboard
 $router->get('/admin', [\App\Controllers\Admin\DashboardController::class, 'index'], [AuthMiddleware::class]);
+$router->get('/admin/dashboard/live', [\App\Controllers\Admin\DashboardController::class, 'live'], [AuthMiddleware::class]);
 
 // Events Management
 $router->get('/admin/events', [\App\Controllers\Admin\EventController::class, 'index'], [AuthMiddleware::class, new RoleMiddleware(['super_admin', 'admin', 'event_manager'])]);
