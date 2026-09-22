@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($pageTitle) ? e($pageTitle) . ' — ' : '' ?><?= e($appName) ?></title>
     <meta name="description" content="Discover, book, and verify tickets for premier concerts, technology conferences, summits, and festivals across Bangladesh with Sidra.">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="<?= url('manifest.json') ?>">
+    <link rel="icon" href="<?= asset('images/pwa-icon.svg') ?>" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="<?= asset('images/pwa-icon.svg') ?>">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,17 +58,18 @@
     <!-- App Styles -->
     <link rel="stylesheet" href="<?= asset('css/app.css') ?>">
 </head>
+
 <body class="bg-[#0b0f19] text-slate-100 min-h-full flex flex-col antialiased selection:bg-brand-600 selection:text-white">
 
     <!-- Flash Toast Notifications -->
     <?php if ($flashSuccess || $flashError || $flashWarning || $flashInfo): ?>
-    <div id="flash-toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 max-w-lg w-[90%] toast-animate cursor-pointer shadow-2xl rounded-xl p-4 flex items-center gap-3.5 border <?= $flashSuccess ? 'bg-emerald-950/90 border-emerald-500/40 text-emerald-200' : ($flashError ? 'bg-rose-950/90 border-rose-500/40 text-rose-200' : ($flashWarning ? 'bg-amber-950/90 border-amber-500/40 text-amber-200' : 'bg-slate-900/90 border-brand-500/40 text-indigo-200')) ?>" onclick="this.remove()">
-        <i data-lucide="<?= $flashSuccess ? 'check-circle-2' : ($flashError ? 'alert-octagon' : ($flashWarning ? 'alert-triangle' : 'info')) ?>" class="w-5 h-5 flex-shrink-0"></i>
-        <div class="text-sm font-medium leading-snug flex-1">
-            <?= $flashSuccess ?: ($flashError ?: ($flashWarning ?: $flashInfo)) ?>
+        <div id="flash-toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 max-w-lg w-[90%] toast-animate cursor-pointer shadow-2xl rounded-xl p-4 flex items-center gap-3.5 border <?= $flashSuccess ? 'bg-emerald-950/90 border-emerald-500/40 text-emerald-200' : ($flashError ? 'bg-rose-950/90 border-rose-500/40 text-rose-200' : ($flashWarning ? 'bg-amber-950/90 border-amber-500/40 text-amber-200' : 'bg-slate-900/90 border-brand-500/40 text-indigo-200')) ?>" onclick="this.remove()">
+            <i data-lucide="<?= $flashSuccess ? 'check-circle-2' : ($flashError ? 'alert-octagon' : ($flashWarning ? 'alert-triangle' : 'info')) ?>" class="w-5 h-5 flex-shrink-0"></i>
+            <div class="text-sm font-medium leading-snug flex-1">
+                <?= $flashSuccess ?: ($flashError ?: ($flashWarning ?: $flashInfo)) ?>
+            </div>
+            <i data-lucide="x" class="w-4 h-4 text-slate-400 hover:text-white flex-shrink-0"></i>
         </div>
-        <i data-lucide="x" class="w-4 h-4 text-slate-400 hover:text-white flex-shrink-0"></i>
-    </div>
     <?php endif; ?>
 
     <!-- Navigation Header -->
@@ -156,7 +165,7 @@
             <a href="<?= url('events') ?>" class="block py-2 text-base font-medium text-slate-300 hover:text-white">Browse Events</a>
             <a href="<?= url('about') ?>" class="block py-2 text-base font-medium text-slate-300 hover:text-white">About Us</a>
             <a href="<?= url('contact') ?>" class="block py-2 text-base font-medium text-slate-300 hover:text-white">Contact</a>
-            
+
             <div class="pt-4 border-t border-slate-800">
                 <?php if ($authCustomer): ?>
                     <a href="<?= url('customer/dashboard') ?>" class="block py-2 text-base font-medium text-brand-400">Dashboard & Tickets</a>
@@ -252,7 +261,10 @@
     </footer>
 
     <!-- Initialize Lucide Icons & App JS -->
-    <script>lucide.createIcons();</script>
+    <script>
+        lucide.createIcons();
+    </script>
     <script src="<?= asset('js/app.js') ?>"></script>
 </body>
+
 </html>

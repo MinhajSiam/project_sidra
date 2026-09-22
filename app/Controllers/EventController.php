@@ -12,8 +12,10 @@ use App\Models\Event;
 use App\Models\EventCategory;
 use App\Models\TicketType;
 
-class EventController {
-    public function index(Request $request): Response {
+class EventController
+{
+    public function index(Request $request): Response
+    {
         $categorySlug = $request->get('category');
         $categoryId = null;
         if ($categorySlug) {
@@ -29,6 +31,7 @@ class EventController {
             'status' => 'published',
             'category_id' => $categoryId,
             'search' => $request->get('q'),
+            'location' => $request->get('location'),
             'date_from' => $request->get('date_from'),
             'sort' => $request->get('sort', 'upcoming'),
             'limit' => $perPage,
@@ -55,7 +58,8 @@ class EventController {
         );
     }
 
-    public function show(Request $request, string $slug): Response {
+    public function show(Request $request, string $slug): Response
+    {
         $event = Event::findBySlug($slug);
         if (!$event || $event['status'] !== 'published') {
             return (new Response())
@@ -75,7 +79,8 @@ class EventController {
         );
     }
 
-    public function checkout(Request $request, string $slug): Response {
+    public function checkout(Request $request, string $slug): Response
+    {
         $event = Event::findBySlug($slug);
         if (!$event || $event['status'] !== 'published') {
             return (new Response())

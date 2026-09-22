@@ -9,9 +9,12 @@ use App\Core\Response;
 use App\Core\View;
 use App\Models\Event;
 use App\Models\EventCategory;
+use App\Models\Venue;
 
-class HomeController {
-    public function index(Request $request): Response {
+class HomeController
+{
+    public function index(Request $request): Response
+    {
         $featuredEvents = Event::all([
             'status' => 'published',
             'is_featured' => 1,
@@ -24,36 +27,42 @@ class HomeController {
         ]);
 
         $categories = EventCategory::all(true);
+        $featuredVenues = array_slice(Venue::all(), 0, 4);
 
         return (new Response())->setContent(
             View::render('pages.home', [
                 'featuredEvents' => $featuredEvents,
                 'upcomingEvents' => $upcomingEvents,
                 'categories' => $categories,
+                'featuredVenues' => $featuredVenues,
                 'layout' => 'layouts.main',
             ])
         );
     }
 
-    public function about(Request $request): Response {
+    public function about(Request $request): Response
+    {
         return (new Response())->setContent(
             View::render('pages.about', ['layout' => 'layouts.main'])
         );
     }
 
-    public function contact(Request $request): Response {
+    public function contact(Request $request): Response
+    {
         return (new Response())->setContent(
             View::render('pages.contact', ['layout' => 'layouts.main'])
         );
     }
 
-    public function terms(Request $request): Response {
+    public function terms(Request $request): Response
+    {
         return (new Response())->setContent(
             View::render('pages.terms', ['layout' => 'layouts.main'])
         );
     }
 
-    public function privacy(Request $request): Response {
+    public function privacy(Request $request): Response
+    {
         return (new Response())->setContent(
             View::render('pages.privacy', ['layout' => 'layouts.main'])
         );

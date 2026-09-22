@@ -6,8 +6,10 @@ namespace App\Models;
 
 use App\Core\Database;
 
-class Event {
-    public static function all(array $filters = []): array {
+class Event
+{
+    public static function all(array $filters = []): array
+    {
         $sql = "SELECT e.*, c.name as category_name, c.slug as category_slug, 
                        v.name as venue_name, v.city as venue_city,
                        (SELECT MIN(price) FROM ticket_types tt WHERE tt.event_id = e.id AND tt.status = 'active') as min_price,
@@ -43,6 +45,11 @@ class Event {
             $params['search'] = '%' . trim($filters['search']) . '%';
         }
 
+        if (!empty($filters['location'])) {
+            $sql .= " AND (v.name LIKE :location OR v.city LIKE :location OR v.address LIKE :location)";
+            $params['location'] = '%' . trim($filters['location']) . '%';
+        }
+
         if (!empty($filters['date_from'])) {
             $sql .= " AND e.event_date >= :date_from";
             $params['date_from'] = $filters['date_from'];
@@ -72,7 +79,8 @@ class Event {
         return Database::fetchAll($sql, $params);
     }
 
-    public static function count(array $filters = []): int {
+    public static function count(array $filters = []): int
+    {
         $sql = "SELECT COUNT(*) as total 
                 FROM `events` e
                 JOIN `event_categories` c ON e.category_id = c.id
@@ -96,11 +104,17 @@ class Event {
             $params['search'] = '%' . trim($filters['search']) . '%';
         }
 
+        if (!empty($filters['location'])) {
+            $sql .= " AND (v.name LIKE :location OR v.city LIKE :location OR v.address LIKE :location)";
+            $params['location'] = '%' . trim($filters['location']) . '%';
+        }
+
         $row = Database::fetch($sql, $params);
         return (int)($row['total'] ?? 0);
     }
 
-    public static function find(int $id): ?array {
+    public static function find(int $id): ?array
+    {
         $event = Database::fetch(
             "SELECT e.*, c.name as category_name, c.slug as category_slug, 
                     v.name as venue_name, v.address as venue_address, v.city as venue_city, v.map_url, v.capacity as venue_capacity
@@ -118,7 +132,8 @@ class Event {
         return $event;
     }
 
-    public static function findBySlug(string $slug): ?array {
+    public static function findBySlug(string $slug): ?array
+    {
         $event = Database::fetch(
             "SELECT e.*, c.name as category_name, c.slug as category_slug, 
                     v.name as venue_name, v.address as venue_address, v.city as venue_city, v.map_url, v.capacity as venue_capacity
@@ -136,7 +151,8 @@ class Event {
         return $event;
     }
 
-    public static function create(array $data): int {
+    public static function create(array $data): int
+    {
         return Database::insert('events', [
             'category_id' => (int)$data['category_id'],
             'venue_id' => (int)$data['venue_id'],
@@ -155,7 +171,8 @@ class Event {
         ]);
     }
 
-    public static function update(int $id, array $data): int {
+    public static function update(int $id, array $data): int
+    {
         $updateFields = [
             'category_id' => (int)$data['category_id'],
             'venue_id' => (int)$data['venue_id'],
@@ -176,11 +193,13 @@ class Event {
         return Database::update('events', $updateFields, 'id = :id', ['id' => $id]);
     }
 
-    public static function delete(int $id): int {
+    public static function delete(int $id): int
+    {
         return Database::delete('events', 'id = :id', ['id' => $id]);
     }
 
-    private static function generateUniqueSlug(string $title, ?int $ignoreId = null): string {
+    private static function generateUniqueSlug(string $title, ?int $ignoreId = null): string
+    {
         $base = str_slug($title, 'event');
         $slug = $base;
         $counter = 1;

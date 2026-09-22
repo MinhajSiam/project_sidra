@@ -3,6 +3,12 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(() => {
+            // Offline support is an enhancement; keep the online app usable if registration fails.
+        });
+    }
+
     // 1. Toast Auto-Dismissal
     const toast = document.getElementById('flash-toast');
     if (toast) {

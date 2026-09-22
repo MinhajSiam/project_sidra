@@ -1,168 +1,126 @@
-<!-- Hero Section -->
-<section class="relative pt-12 pb-24 overflow-hidden bg-radial-gradient">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto space-y-6">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-bold tracking-wide uppercase">
-                <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
-                Next-Gen Event Ticketing
+<?php
+$heroEvents = array_slice($featuredEvents, 0, 3);
+$venueIcons = ['building-2', 'landmark', 'map', 'warehouse'];
+$categoryIcons = ['cpu', 'trophy', 'palette', 'briefcase-business', 'music-2', 'sparkles'];
+?>
+<section class="relative overflow-hidden border-b border-slate-800/80 bg-[#0b0f19]">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_78%_18%,rgba(99,102,241,.24),transparent_34%),radial-gradient(circle_at_15%_80%,rgba(14,165,233,.12),transparent_30%)]"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
+        <div class="grid lg:grid-cols-[.82fr_1.18fr] gap-12 items-center">
+            <div class="max-w-xl">
+                <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.22em] text-brand-300 mb-5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span>Your next great night starts here</div>
+                <h1 class="font-heading font-extrabold text-5xl sm:text-6xl lg:text-7xl leading-[.98] tracking-tight text-white">Find the room<br><span class="text-brand-400">worth being in.</span></h1>
+                <p class="mt-6 text-base sm:text-lg leading-relaxed text-slate-400">Live concerts, sharp ideas, stadium energy, and intimate workshops. Discover the events that make the calendar matter.</p>
+                <form action="<?= url('events') ?>" method="GET" class="mt-8 p-3 bg-white rounded-2xl shadow-2xl text-slate-900">
+                    <div class="grid sm:grid-cols-2 gap-2"><label class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-100 sm:col-span-2"><i data-lucide="search" class="w-4 h-4 text-slate-500"></i><input name="q" class="w-full bg-transparent text-sm outline-none" placeholder="Event name or keyword"></label><label class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-100"><i data-lucide="map-pin" class="w-4 h-4 text-slate-500"></i><input name="location" class="w-full bg-transparent text-sm outline-none" placeholder="City or venue"></label><label class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-100"><i data-lucide="calendar-days" class="w-4 h-4 text-slate-500"></i><input type="date" name="date_from" class="w-full bg-transparent text-sm outline-none text-slate-600"></label><select name="category" class="px-3 py-2.5 rounded-xl bg-slate-100 text-sm text-slate-600 sm:col-span-2">
+                            <option value="">All categories</option><?php foreach ($categories as $category): ?><option value="<?= e($category['slug']) ?>"><?= e($category['name']) ?></option><?php endforeach; ?>
+                        </select></div><button class="mt-2 w-full py-3 rounded-xl gradient-brand text-white text-sm font-bold">Search events <i data-lucide="arrow-up-right" class="w-4 h-4 inline"></i></button>
+                </form>
             </div>
-
-            <h1 class="font-heading font-extrabold text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white leading-[1.1]">
-                Unforgettable Experiences, <br>
-                <span class="gradient-text">Zero Compromise.</span>
-            </h1>
-
-            <p class="text-lg text-slate-400 font-normal leading-relaxed">
-                Discover, book, and verify tickets for premier concerts, technology conferences, summits, and festivals across Bangladesh with instant mobile payments and dynamic secure QR passes.
-            </p>
-
-            <!-- Search Form -->
-            <form action="<?= url('events') ?>" method="GET" class="mt-8 max-w-2xl mx-auto flex flex-col sm:flex-row gap-3 p-2 rounded-2xl glass-card shadow-2xl">
-                <div class="flex-1 flex items-center gap-3 px-4 py-2">
-                    <i data-lucide="search" class="w-5 h-5 text-slate-400"></i>
-                    <input type="text" name="q" placeholder="Search by event title, artist, or venue..." class="w-full bg-transparent border-none text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-0">
-                </div>
-                <button type="submit" class="px-7 py-3 rounded-xl gradient-brand text-white font-bold text-sm shadow-lg shadow-brand-600/30 hover:shadow-brand-600/50 hover:scale-[1.02] transition-all flex items-center justify-center gap-2">
-                    Explore Events
-                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </button>
-            </form>
-
-            <!-- Popular Category Badges -->
-            <div class="pt-4 flex flex-wrap items-center justify-center gap-2">
-                <span class="text-xs font-semibold text-slate-500 mr-1">Trending:</span>
-                <?php foreach ($categories as $cat): ?>
-                    <a href="<?= url('events?category=' . urlencode($cat['slug'])) ?>" class="px-3 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs font-medium text-slate-300 hover:border-brand-500/50 hover:text-white transition-all">
-                        <?= e($cat['name']) ?>
-                    </a>
-                <?php endforeach; ?>
-            </div>
-        </div>
-
-        <!-- Trust Statistics Bar -->
-        <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 py-8 border-y border-slate-800/80">
-            <div class="text-center">
-                <div class="font-heading font-extrabold text-3xl sm:text-4xl text-white">50K+</div>
-                <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-1">Tickets Verified</div>
-            </div>
-            <div class="text-center">
-                <div class="font-heading font-extrabold text-3xl sm:text-4xl text-brand-400">99.9%</div>
-                <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-1">Gate Check-in Uptime</div>
-            </div>
-            <div class="text-center">
-                <div class="font-heading font-extrabold text-3xl sm:text-4xl text-white">0%</div>
-                <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-1">Duplicate Fraud</div>
-            </div>
-            <div class="text-center">
-                <div class="font-heading font-extrabold text-3xl sm:text-4xl text-emerald-400">100%</div>
-                <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-1">Secure Manual Escrow</div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Featured Events Showcase -->
-<?php if (!empty($featuredEvents)): ?>
-<section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-end justify-between mb-10">
-        <div>
-            <div class="text-xs font-bold text-brand-400 uppercase tracking-widest mb-2">Editor's Pick</div>
-            <h2 class="font-heading font-bold text-3xl text-white">Featured Events</h2>
-        </div>
-        <a href="<?= url('events') ?>" class="text-sm font-semibold text-brand-400 hover:text-brand-300 flex items-center gap-1">
-            View All Events <i data-lucide="arrow-right" class="w-4 h-4"></i>
-        </a>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <?php foreach ($featuredEvents as $event): ?>
-            <div class="glass-card rounded-2xl overflow-hidden glass-card-hover flex flex-col group">
-                <!-- Banner Image -->
-                <div class="relative h-56 overflow-hidden bg-slate-900">
-                    <img src="<?= upload_url($event['banner_image']) ?>" alt="<?= e($event['title']) ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent"></div>
-                    <div class="absolute top-4 left-4">
-                        <span class="px-3 py-1 rounded-full bg-brand-600 text-white font-bold text-xs shadow-lg">
-                            <?= e($event['category_name']) ?>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Event Details -->
-                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div class="space-y-2">
-                        <div class="flex items-center gap-2 text-xs font-semibold text-brand-400">
-                            <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
-                            <?= format_date($event['event_date']) ?> • <?= format_time($event['start_time']) ?>
-                        </div>
-                        <h3 class="font-heading font-bold text-xl text-white line-clamp-1 group-hover:text-brand-300 transition-colors">
-                            <?= e($event['title']) ?>
-                        </h3>
-                        <p class="text-xs text-slate-400 line-clamp-2">
-                            <?= e($event['summary']) ?>
-                        </p>
-                    </div>
-
-                    <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-                        <div>
-                            <div class="text-[10px] text-slate-500 uppercase font-semibold">Starts from</div>
-                            <div class="font-heading font-extrabold text-lg text-white">
-                                <?= format_currency($event['min_price'] ?? 0) ?>
+            <div class="relative min-h-[390px] sm:min-h-[470px]"><?php foreach ($heroEvents as $index => $event): ?><article class="hero-slide <?= $index === 0 ? '' : 'hidden' ?> absolute inset-0"><a href="<?= url("events/{$event['slug']}") ?>" class="block h-full">
+                            <div class="h-full min-h-[390px] sm:min-h-[470px] rounded-[2rem] overflow-hidden relative border border-white/10 bg-slate-900"><img src="<?= upload_url($event['banner_image']) ?>" alt="<?= e($event['title']) ?>" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#080b13] via-transparent to-transparent"></div>
+                                <div class="absolute left-6 right-6 bottom-7"><span class="px-3 py-1 rounded-full bg-white/15 text-white text-[10px] font-bold uppercase tracking-widest"><?= e($event['category_name']) ?></span>
+                                    <h2 class="font-heading text-3xl sm:text-5xl font-extrabold text-white leading-tight mt-3"><?= e($event['title']) ?></h2>
+                                    <div class="flex flex-wrap gap-4 mt-5 text-xs font-semibold text-slate-200"><span><i data-lucide="calendar" class="w-4 h-4 inline mr-1"></i><?= format_date($event['event_date']) ?></span><span><i data-lucide="map-pin" class="w-4 h-4 inline mr-1"></i><?= e($event['venue_city']) ?></span><span class="text-emerald-300">From <?= format_currency($event['min_price'] ?? 0) ?></span></div>
+                                </div>
                             </div>
-                        </div>
-                        <a href="<?= url("events/{$event['slug']}") ?>" class="px-4 py-2 rounded-xl gradient-brand text-white font-bold text-xs hover:opacity-90 transition-opacity">
-                            Get Tickets
-                        </a>
+                        </a></article><?php endforeach; ?><?php if (count($heroEvents) > 1): ?><div class="absolute bottom-5 right-6 z-10 flex gap-2"><?php foreach ($heroEvents as $index => $event): ?><button type="button" class="hero-dot w-2.5 h-2.5 rounded-full <?= $index === 0 ? 'bg-white' : 'bg-white/40' ?>" data-target="<?= $index ?>" aria-label="Show featured event <?= $index + 1 ?>"></button><?php endforeach; ?></div><?php endif; ?></div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-end justify-between mb-8">
+        <div>
+            <p class="text-xs font-bold uppercase tracking-[.2em] text-brand-400">Plan the calendar</p>
+            <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white mt-2">Upcoming & trending</h2>
+        </div><a href="<?= url('events') ?>" class="text-sm font-bold text-brand-300">See all events <i data-lucide="arrow-up-right" class="w-4 h-4 inline"></i></a>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5"><?php foreach (array_slice($upcomingEvents, 0, 6) as $event): ?><article class="group bg-slate-900/70 border border-slate-800 rounded-2xl overflow-hidden hover:border-brand-500/50 transition-colors"><a href="<?= url("events/{$event['slug']}") ?>" class="block relative h-48 overflow-hidden"><img src="<?= upload_url($event['banner_image']) ?>" alt="<?= e($event['title']) ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent"></div><span class="absolute top-4 left-4 px-2.5 py-1 rounded-md bg-slate-950/70 text-[10px] font-bold uppercase text-brand-200"><?= e($event['category_name']) ?></span>
+                </a>
+                <div class="p-5">
+                    <h3 class="font-heading text-xl font-bold text-white line-clamp-1"><?= e($event['title']) ?></h3>
+                    <div class="grid grid-cols-2 gap-3 mt-4 text-xs text-slate-400"><span><i data-lucide="calendar" class="w-3.5 h-3.5 inline mr-1"></i><?= format_date($event['event_date']) ?></span><span><i data-lucide="map-pin" class="w-3.5 h-3.5 inline mr-1"></i><?= e($event['venue_city']) ?></span></div>
+                    <div class="flex items-end justify-between mt-5 pt-4 border-t border-slate-800">
+                        <div>
+                            <p class="text-[10px] uppercase font-bold text-slate-500">Starting from</p>
+                            <p class="font-heading text-lg font-extrabold text-white"><?= format_currency($event['min_price'] ?? 0) ?></p>
+                        </div><a href="<?= url("events/{$event['slug']}") ?>" class="px-3.5 py-2 rounded-lg gradient-brand text-xs font-bold text-white">Get tickets</a>
                     </div>
                 </div>
-            </div>
-        <?php endforeach; ?>
-    </div>
+            </article><?php endforeach; ?></div>
 </section>
-<?php endif; ?>
 
-<!-- How It Works Section -->
-<section class="py-20 bg-dark-800/40 border-y border-slate-800/60">
+<section class="py-20 bg-slate-900/50 border-y border-slate-800/70">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-2xl mx-auto mb-16">
-            <div class="text-xs font-bold text-brand-400 uppercase tracking-widest mb-2">Simplicity & Security</div>
-            <h2 class="font-heading font-bold text-3xl sm:text-4xl text-white">How Sidra Works</h2>
-            <p class="text-sm text-slate-400 mt-3">Book and enter your favorite events in 3 effortless steps with maximum transaction transparency.</p>
+        <p class="text-xs font-bold uppercase tracking-[.2em] text-brand-400">Browse by mood</p>
+        <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white mt-2">Find your scene</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mt-8"><?php foreach ($categories as $index => $category): ?><a href="<?= url('events?category=' . urlencode($category['slug'])) ?>" class="group p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 hover:border-brand-500/60 transition-all"><i data-lucide="<?= e($categoryIcons[$index % count($categoryIcons)]) ?>" class="w-6 h-6 text-brand-400"></i>
+                    <h3 class="mt-8 text-sm font-bold text-white"><?= e($category['name']) ?></h3>
+                    <p class="mt-1 text-[11px] text-slate-500"><?= (int)$category['event_count'] ?> events</p>
+                </a><?php endforeach; ?></div>
+    </div>
+</section>
+
+<section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-end justify-between mb-8">
+        <div>
+            <p class="text-xs font-bold uppercase tracking-[.2em] text-brand-400">Go somewhere memorable</p>
+            <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white mt-2">Popular venues</h2>
+        </div><a href="<?= url('events') ?>" class="text-sm font-bold text-brand-300">Explore events <i data-lucide="arrow-up-right" class="w-4 h-4 inline"></i></a>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"><?php foreach ($featuredVenues as $index => $venue): ?><a href="<?= url('events?location=' . urlencode($venue['city'])) ?>" class="p-5 rounded-2xl border border-slate-800 bg-slate-900/60 hover:border-brand-500/50 transition-colors">
+                <div class="w-11 h-11 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center"><i data-lucide="<?= $venueIcons[$index % count($venueIcons)] ?>" class="w-5 h-5 text-brand-300"></i></div>
+                <h3 class="font-heading font-bold text-white mt-5"><?= e($venue['name']) ?></h3>
+                <p class="text-xs text-slate-400 mt-2"><?= e($venue['city']) ?> · <?= (int)$venue['event_count'] ?> events</p>
+            </a><?php endforeach; ?></div>
+</section>
+
+<section class="py-20 bg-brand-950/20 border-y border-brand-500/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-xs font-bold uppercase tracking-[.2em] text-brand-400">Simple by design</p>
+        <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white mt-2">From discovery to front row.</h2>
+        <div class="grid sm:grid-cols-3 gap-8 mt-10">
+            <div><span class="text-4xl font-heading font-extrabold text-brand-400">01</span>
+                <h3 class="font-bold text-white mt-3">Choose a moment</h3>
+                <p class="text-xs text-slate-400 mt-2">Search the event, date, category, or venue that fits your plan.</p>
+            </div>
+            <div><span class="text-4xl font-heading font-extrabold text-brand-400">02</span>
+                <h3 class="font-bold text-white mt-3">Reserve your pass</h3>
+                <p class="text-xs text-slate-400 mt-2">Select a tier and complete secure mobile payment verification.</p>
+            </div>
+            <div><span class="text-4xl font-heading font-extrabold text-emerald-400">03</span>
+                <h3 class="font-bold text-white mt-3">Walk in smiling</h3>
+                <p class="text-xs text-slate-400 mt-2">Show your verified QR pass at the gate. No paper chase.</p>
+            </div>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Step 1 -->
-            <div class="glass-card rounded-2xl p-8 text-center space-y-4 relative">
-                <div class="w-14 h-14 rounded-2xl bg-brand-600/20 text-brand-400 border border-brand-500/30 font-heading font-extrabold text-2xl flex items-center justify-center mx-auto shadow-xl">
-                    1
-                </div>
-                <h3 class="font-heading font-bold text-xl text-white">Select Your Tickets</h3>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    Browse verified events, choose your preferred ticket tier (VIP, General, Student), and select your desired quantity.
-                </p>
-            </div>
-
-            <!-- Step 2 -->
-            <div class="glass-card rounded-2xl p-8 text-center space-y-4 relative">
-                <div class="w-14 h-14 rounded-2xl bg-brand-600/20 text-brand-400 border border-brand-500/30 font-heading font-extrabold text-2xl flex items-center justify-center mx-auto shadow-xl">
-                    2
-                </div>
-                <h3 class="font-heading font-bold text-xl text-white">Submit Mobile Payment</h3>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    Transfer via bKash, Nagad, or Rocket and enter your Transaction ID (TrxID). Our finance team verifies every record securely.
-                </p>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="glass-card rounded-2xl p-8 text-center space-y-4 relative">
-                <div class="w-14 h-14 rounded-2xl bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 font-heading font-extrabold text-2xl flex items-center justify-center mx-auto shadow-xl">
-                    3
-                </div>
-                <h3 class="font-heading font-bold text-xl text-white">Scan QR at Gate</h3>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    Receive your digital pass instantly upon approval. Present your encrypted QR code on your phone or print to enter!
-                </p>
-            </div>
+        <div class="mt-12 p-6 sm:p-8 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+            <div>
+                <p class="text-xs font-bold uppercase tracking-widest text-emerald-400">For organizers</p>
+                <h3 class="font-heading text-2xl font-bold text-white mt-1">Have a room that needs a crowd?</h3>
+                <p class="text-sm text-slate-400 mt-2">Bring your next event to Sidra and let us handle discovery, tickets, and the gate.</p>
+            </div><a href="<?= url('contact') ?>" class="shrink-0 px-5 py-3 rounded-xl gradient-brand text-white text-sm font-bold">Host your event <i data-lucide="arrow-up-right" class="w-4 h-4 inline ml-1"></i></a>
         </div>
     </div>
 </section>
+
+<script>
+    (() => {
+        const slides = [...document.querySelectorAll('.hero-slide')];
+        const dots = [...document.querySelectorAll('.hero-dot')];
+        if (slides.length < 2) return;
+        let active = 0;
+        const show = (index) => {
+            active = index;
+            slides.forEach((slide, i) => slide.classList.toggle('hidden', i !== active));
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('bg-white', i === active);
+                dot.classList.toggle('bg-white/40', i !== active);
+            });
+        };
+        dots.forEach((dot, index) => dot.addEventListener('click', () => show(index)));
+        setInterval(() => show((active + 1) % slides.length), 6500);
+    })();
+</script>
